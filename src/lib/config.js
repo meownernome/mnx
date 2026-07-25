@@ -2,7 +2,7 @@ const db = globalThis.__B44_DB__ || { auth:{ isAuthenticated: async()=>false, me
 
 // HarvalMC — Site configuration
 
-const RAW_API = import.meta.env.VITE_API || 'https://fuckers.onrender.com';
+const RAW_API = import.meta.env.VITE_API || process.env.API || 'https://fuckers.onrender.com';
 export const API_BASE = RAW_API.replace(/\/+$/, '') + '/api';
 
 export const ASSETS = {
