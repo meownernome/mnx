@@ -1,0 +1,122 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 240 15% 5%;
+    --foreground: 230 30% 95%;
+    --card: 240 14% 8%;
+    --card-foreground: 230 30% 95%;
+    --popover: 240 14% 8%;
+    --popover-foreground: 230 30% 95%;
+    --primary: 235 85% 64%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 10% 14%;
+    --secondary-foreground: 230 30% 90%;
+    --muted: 240 10% 12%;
+    --muted-foreground: 230 15% 55%;
+    --accent: 265 85% 62%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 12% 16%;
+    --input: 240 12% 18%;
+    --ring: 235 85% 64%;
+    --radius: 0.75rem;
+    --font-heading: 'Rajdhani', system-ui, sans-serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+    --font-display: 'Orbitron', system-ui, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body;
+    background-color: #0a0b16;
+  }
+}
+
+@layer utilities {
+  .font-display { font-family: 'Orbitron', system-ui, sans-serif; }
+  .font-heading { font-family: 'Rajdhani', system-ui, sans-serif; }
+
+  .glass {
+    background: rgba(18, 20, 42, 0.55);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(91, 108, 246, 0.15);
+  }
+
+  .glass-strong {
+    background: rgba(18, 20, 42, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(91, 108, 246, 0.22);
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #7B8FFF 0%, #BF5FFF 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .gradient-text-gold {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .glow-blue { box-shadow: 0 0 20px rgba(91, 108, 246, 0.35); }
+  .glow-purple { box-shadow: 0 0 20px rgba(191, 95, 255, 0.35); }
+
+  .bg-obsidian {
+    background: linear-gradient(180deg, #0a0b16 0%, #0d0e1a 50%, #0a0b16 100%);
+  }
+
+  .scanline-bg {
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(91,108,246,0.015) 2px, rgba(91,108,246,0.015) 4px);
+  }
+}
+
+/* Starfield */
+.starfield { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.star { position: absolute; background: #A2B0FF; border-radius: 0; animation: twinkle var(--dur, 3s) ease-in-out infinite; }
+.star::before, .star::after {
+  content: ''; position: absolute; background: #A2B0FF;
+}
+.star::before { width: 2px; height: 8px; left: 3px; top: 0; }
+.star::after { width: 8px; height: 2px; left: 0; top: 3px; }
+.star { width: 8px; height: 8px; }
+.star { clip-path: polygon(40% 0, 60% 0, 60% 40%, 100% 40%, 100% 60%, 60% 60%, 60% 100%, 40% 100%, 40% 60%, 0 60%, 0 40%, 40% 40%); }
+@keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(0.8); } 50% { opacity: 0.9; transform: scale(1.1); } }
+
+/* Floating animation */
+@keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
+.animate-float { animation: float 6s ease-in-out infinite; }
+
+/* Pulse glow */
+@keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 12px var(--glow-color, rgba(255,215,0,0.3)); } 50% { box-shadow: 0 0 24px var(--glow-color, rgba(255,215,0,0.6)); } }
+.pulse-glow { animation: pulse-glow 2.5s ease-in-out infinite; }
+
+/* Shimmer */
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+.shimmer { background: linear-gradient(90deg, transparent, rgba(123,143,255,0.1), transparent); background-size: 200% 100%; animation: shimmer 3s infinite; }
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #0d0e1a; }
+::-webkit-scrollbar-thumb { background: #2a2d4a; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #5B6CF6; }
+
+/* Pixel ground */
+.pixel-ground {
+  background: repeating-linear-gradient(90deg, #2A1F4B 0px, #2A1F4B 8px, #3A2E5B 8px, #3A2E5B 16px, #453A6A 16px, #453A6A 24px, #5E508B 24px, #5E508B 32px);
+}
