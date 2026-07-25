@@ -1,13 +1,11 @@
 import { useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
-import { ArrowLeft, Search } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { fetchPlayers, getPlayerGamemodes } from '@/lib/api';
 import { GAMEMODES, TIER_ORDER, getTierConfig, getGamemode } from '@/lib/config';
 import GamemodeIcon from '@/components/GamemodeIcon';
 import TierBadge from '@/components/TierBadge';
-import SearchBar from '@/components/SearchBar';
 
 export default function Gamemode() {
   const { mode } = useParams();
@@ -15,9 +13,7 @@ export default function Gamemode() {
   const [search, setSearch] = useState('');
 
   const gm = getGamemode(mode);
-  const config = getGamemode(mode);
 
-  // Build leaderboard for this gamemode
   const leaderboard = useMemo(() => {
     const entries = [];
     players.forEach((p) => {
@@ -38,7 +34,6 @@ export default function Gamemode() {
     });
   }, [players, mode, search]);
 
-  // Group by tier
   const tierGroups = useMemo(() => {
     const groups = {};
     TIER_ORDER.forEach((t) => (groups[t] = []));
@@ -48,64 +43,62 @@ export default function Gamemode() {
     return groups;
   }, [leaderboard]);
 
-  const suggestions = search ? players.filter((p) => p.username.toLowerCase().includes(search.toLowerCase())).slice(0, 6) : [];
-
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-      <Link to="/gamemodes" className="inline-flex items-center gap-2 text-muted-foreground hover:text-white mb-6 text-sm font-heading font-semibold">
-        <ArrowLeft size={18} /> All Gamemodes
+    <div className="max-w-5xl mx-auto px-4 py-6 sm:py-10">
+      <Link to="/gamemodes" className="inline-flex items-center gap-1.5 text-sm text-[#71718e] hover:text-white mb-5 transition-colors">
+        <ArrowLeft size={16} /> All Gamemodes
       </Link>
 
-      {/* Header */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-        <div className="glass-strong rounded-3xl p-6 sm:p-8 relative overflow-hidden">
-          <div className="absolute inset-0" style={{ background: `radial-gradient(circle at 30% 0%, ${gm.color}15, transparent 60%)` }} />
-          <div className="relative z-10 flex items-center gap-5">
-            <GamemodeIcon gamemodeId={gm.id} size={56} />
-            <div>
-              <h1 className="font-display font-black text-3xl sm:text-4xl text-white">{gm.label}</h1>
-              <p className="text-muted-foreground mt-1">{leaderboard.length} ranked players</p>
-            </div>
-          </div>
+      <div className="flex items-center gap-4 mb-6">
+        <GamemodeIcon gamemodeId={gm.id} size={40} />
+        <div>
+          <h1 className="font-display font-black text-2xl sm:text-3xl text-white">{gm.label}</h1>
+          <p className="text-sm text-[#71718e]">{leaderboard.length} ranked players</p>
         </div>
-      </motion.div>
-
-      {/* Search */}
-      <div className="mb-6">
-        <SearchBar value={search} onChange={setSearch} placeholder={`Search ${gm.label} players...`} suggestions={suggestions} onSuggestionClick={(p) => (window.location.href = `/player/${encodeURIComponent(p.username)}`)} />
       </div>
 
-      {/* Leaderboard grouped by tier */}
+      <div className="mb-5">
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search players..."
+          className="w-full sm:w-64 px-3 py-2 rounded-lg bg-[#11131f] border border-white/[0.08] text-sm text-white placeholder-[#555] outline-none focus:border-indigo-500/50 transition-colors"
+        />
+      </div>
+
       {isLoading ? (
-        <div className="text-center py-20 text-muted-foreground">Loading...</div>
+        <div className="text-center py-20 text-sm text-[#71718e]">Loading...</div>
       ) : search ? (
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           {leaderboard.map((p, i) => (
-            <PlayerRowLite key={p.id} player={p} rank={i + 1} gm={gm} />
+            <PlayerRowLite key={p.id} player={p} rank={i + 1} />
           ))}
-          {leaderboard.length === 0 && <div className="text-center py-20 glass rounded-2xl text-muted-foreground">No players found.</div>}
+          {leaderboard.length === 0 && (
+            <div className="text-center py-20 text-sm text-[#71718e]">No players found.</div>
+          )}
         </div>
       ) : (
-        <div className="space-y-8">
+        <div className="space-y-6">
           {TIER_ORDER.filter((t) => t !== 'Unranked' && (tierGroups[t] || []).length > 0).map((tier) => {
             const tc = getTierConfig(tier);
             return (
-              <motion.div key={tier} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}>
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-1 h-8 rounded-full" style={{ background: tc.color, boxShadow: `0 0 12px ${tc.glow}` }} />
-                  <h2 className="font-display font-bold text-xl text-white" style={{ color: tc.color }}>{tc.label}</h2>
-                  <span className="text-sm text-muted-foreground">({tierGroups[tier].length})</span>
+              <div key={tier}>
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-1 h-5 rounded-full" style={{ background: tc.color }} />
+                  <h2 className="font-display font-bold text-base" style={{ color: tc.color }}>{tc.label}</h2>
+                  <span className="text-xs text-[#555]">({tierGroups[tier].length})</span>
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-1">
                   {tierGroups[tier].map((p, i) => (
-                    <PlayerRowLite key={p.id} player={p} rank={i + 1} gm={gm} tierBadge={tier} />
+                    <PlayerRowLite key={p.id} player={p} rank={i + 1} tierBadge={tier} />
                   ))}
                 </div>
-              </motion.div>
+              </div>
             );
           })}
           {leaderboard.length === 0 && (
-            <div className="text-center py-20 glass rounded-2xl text-muted-foreground">No players ranked in {gm.label} yet.</div>
+            <div className="text-center py-20 text-sm text-[#71718e]">No players ranked in {gm.label} yet.</div>
           )}
         </div>
       )}
@@ -113,24 +106,23 @@ export default function Gamemode() {
   );
 }
 
-function PlayerRowLite({ player, rank, gm, tierBadge }) {
+function PlayerRowLite({ player, rank, tierBadge }) {
   return (
-    <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} whileHover={{ x: 2 }}>
-      <Link to={`/player/${encodeURIComponent(player.username)}`}>
-        <div className="flex items-center gap-4 px-4 py-3 rounded-2xl glass hover:glass-strong transition-all group">
-          <div className="font-display font-black text-lg text-muted-foreground w-8">#{rank}</div>
-          <img src={`https://mc-heads.net/avatar/${player.username}/100`} alt="" className="w-12 h-12 rounded-xl border border-indigo-500/20 group-hover:border-indigo-500/50" />
+    <Link to={`/player/${encodeURIComponent(player.username)}`} className="block group">
+      <div className="card-base rounded-lg px-4 py-3 group-hover:card-hover transition-all">
+        <div className="flex items-center gap-3">
+          <div className="font-display font-bold text-sm text-[#555] w-6 text-right shrink-0">#{rank}</div>
+          <img src={`https://mc-heads.net/avatar/${player.username}/100`} alt="" className="w-9 h-9 rounded-md shrink-0" />
           <div className="flex-1 min-w-0">
-            <div className="font-heading font-bold text-white truncate">{player.username}</div>
-            <div className="text-xs text-muted-foreground">{player.status === 'Online' ? '🟢 Online' : '⚫ Offline'}</div>
+            <div className="font-heading font-bold text-sm text-white truncate group-hover:text-indigo-400 transition-colors">{player.username}</div>
           </div>
           {tierBadge && <TierBadge tier={tierBadge} size="sm" showLabel={false} />}
           <div className="text-right">
-            <div className="font-display font-black text-lg text-white">{player.gmPoints}</div>
-            <div className="text-[10px] uppercase text-muted-foreground">Points</div>
+            <div className="font-display font-bold text-sm text-white">{player.gmPoints}</div>
+            <div className="text-[10px] text-[#555]">pts</div>
           </div>
         </div>
-      </Link>
-    </motion.div>
+      </div>
+    </Link>
   );
 }

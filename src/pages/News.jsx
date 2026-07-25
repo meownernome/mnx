@@ -1,5 +1,4 @@
-import { motion } from 'framer-motion';
-import { Newspaper, Calendar, Clock, ArrowRight } from 'lucide-react';
+import { Newspaper, Calendar, ArrowRight } from 'lucide-react';
 
 const NEWS_ITEMS = [
   {
@@ -38,50 +37,37 @@ const NEWS_ITEMS = [
 
 export default function News() {
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-        <div className="flex items-center gap-3 mb-2">
-          <Newspaper className="text-indigo-400" size={28} />
-          <h1 className="font-display font-black text-3xl sm:text-4xl text-white">News & Announcements</h1>
+    <div className="max-w-5xl mx-auto px-4 py-6 sm:py-10">
+      <div className="mb-8">
+        <div className="flex items-center gap-2 mb-1">
+          <Newspaper size={22} className="text-indigo-400" />
+          <h1 className="font-display font-black text-2xl sm:text-3xl text-white">News</h1>
         </div>
-        <p className="text-muted-foreground">Stay up to date with the latest from HarvalMC.</p>
-      </motion.div>
+        <p className="text-sm text-[#71718e]">Stay up to date with the latest from HarvalMC.</p>
+      </div>
 
-      <div className="space-y-5">
-        {NEWS_ITEMS.map((item, i) => (
-          <motion.div
-            key={item.id}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: i * 0.08 }}
-            whileHover={{ x: 4 }}
-            className="glass rounded-2xl p-6 hover:glass-strong transition-all relative overflow-hidden group cursor-pointer"
-          >
-            <div
-              className="absolute left-0 top-0 bottom-0 w-1"
-              style={{ background: item.color }}
-            />
-            <div className="flex items-start justify-between gap-4 mb-3">
-              <div className="flex items-center gap-3">
+      <div className="space-y-3">
+        {NEWS_ITEMS.map((item) => (
+          <div key={item.id} className="card-base rounded-xl p-5 hover:card-hover transition-all cursor-pointer">
+            <div className="flex items-start justify-between gap-4 mb-2">
+              <div className="flex items-center gap-2">
                 <span
-                  className="px-3 py-1 rounded-full text-xs font-display font-bold uppercase tracking-wider"
-                  style={{ background: `${item.color}15`, border: `1px solid ${item.color}33`, color: item.color }}
+                  className="px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider"
+                  style={{ background: `${item.color}15`, color: item.color }}
                 >
                   {item.category}
                 </span>
-                <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <Calendar size={12} /> {new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                <span className="flex items-center gap-1 text-xs text-[#555]">
+                  <Calendar size={11} /> {new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                 </span>
               </div>
             </div>
-            <h2 className="font-display font-bold text-xl sm:text-2xl text-white mb-2 group-hover:gradient-text transition-all">
-              {item.title}
-            </h2>
-            <p className="text-muted-foreground leading-relaxed">{item.excerpt}</p>
-            <div className="flex items-center gap-1 mt-4 text-sm font-heading font-semibold text-indigo-400 group-hover:text-indigo-300">
-              Read more <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+            <h2 className="font-display font-bold text-lg text-white mb-1">{item.title}</h2>
+            <p className="text-sm text-[#71718e] leading-relaxed">{item.excerpt}</p>
+            <div className="flex items-center gap-1 mt-3 text-xs font-semibold text-indigo-400">
+              Read more <ArrowRight size={12} />
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
     </div>
