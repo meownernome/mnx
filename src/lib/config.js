@@ -6,22 +6,22 @@ const RAW_API = import.meta.env.VITE_API || process.env.API || 'https://fuckers.
 export const API_BASE = RAW_API.replace(/\/+$/, '') + '/api';
 
 export const ASSETS = {
-  logo: 'https://media.db.com/images/public/user_6a0f07844f88e1528ccecdf0/abad052b0_logo.png',
-  banner: 'https://media.db.com/images/public/user_6a0f07844f88e1528ccecdf0/e653c4b44_banner.png',
-  favicon: 'https://media.db.com/images/public/user_6a0f07844f88e1528ccecdf0/c49e9c8ed_favicon.png',
-  crest: 'https://media.db.com/images/public/user_6a0f07844f88e1528ccecdf0/5786ca617_apple-touch-icon.png',
+  logo: '/logo.png',
+  banner: '/banner.png',
+  favicon: '/favicon.png',
+  crest: '/favicon.png',
 };
 
 export const ICONS = {
-  sword: 'https://media.db.com/images/public/user_6a0f07844f88e1528ccecdf0/781f38620_sword.svg',
-  pot: 'https://media.db.com/images/public/user_6a0f07844f88e1528ccecdf0/baf332e77_pot.svg',
-  uhc: 'https://media.db.com/images/public/user_6a0f07844f88e1528ccecdf0/a65bd5efa_uhc.svg',
-  vanilla: 'https://media.db.com/images/public/user_6a0f07844f88e1528ccecdf0/4802c1bf6_vanilla.svg',
-  axe: 'https://media.db.com/images/public/user_6a0f07844f88e1528ccecdf0/6d3a843d9_axe.svg',
-  nethop: 'https://media.db.com/images/public/user_6a0f07844f88e1528ccecdf0/0bcf174e1_nethop.svg',
-  smp: 'https://media.db.com/images/public/user_6a0f07844f88e1528ccecdf0/1ff586f27_smp.svg',
-  overall: 'https://media.db.com/images/public/user_6a0f07844f88e1528ccecdf0/28a8dac37_overall.svg',
-  mace: 'https://media.db.com/images/public/user_6a0f07844f88e1528ccecdf0/d5b5423da_mace.svg',
+  sword: '/sword.svg',
+  pot: '/pot.svg',
+  uhc: '/uhc.svg',
+  vanilla: '/vanilla.svg',
+  axe: '/axe.svg',
+  nethop: '/nethop.svg',
+  smp: '/smp.svg',
+  overall: '/overall.svg',
+  mace: '/mace.svg',
 };
 
 export const GAMEMODES = [
